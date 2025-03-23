@@ -68,10 +68,10 @@ const Navbar = () => {
                             Back
                         </p>
                     </div>
-                    <NavLink onClick={() => setVisible(false)} className="py-2 pl-6" to='/Contact'> Contact </NavLink>
-                    <NavLink onClick={() => setVisible(false)} className="py-2 pl-6" to='/About'> About </NavLink>
-                    <NavLink onClick={() => setVisible(false)} className="py-2 pl-6" to='/Collections'> Collections </NavLink>
-                    <NavLink onClick={() => setVisible(false)} className="py-2 pl-6" to='/'> Home </NavLink>
+                    <NavLink onClick={() => setVisible(false)} className="py-2 pl-6 hover:bg-gray-300 hover:text-white" to='/Contact'> Contact </NavLink>
+                    <NavLink onClick={() => setVisible(false)} className="py-2 pl-6 hover:bg-gray-300 hover:text-white" to='/About'> About </NavLink>
+                    <NavLink onClick={() => setVisible(false)} className="py-2 pl-6 hover:bg-gray-300 hover:text-white" to='/Collections'> Collections </NavLink>
+                    <NavLink onClick={() => setVisible(false)} className="py-2 pl-6 hover:bg-gray-300 hover:text-white" to='/'> Home </NavLink>
                 </div>
             </div>
 
