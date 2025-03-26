@@ -3,7 +3,6 @@ import { ShopContext } from '../context/ShopContext'
 import { assets } from '../assets/assets';
 import Title from '../components/Title';
 import ProductItem from '../components/ProductItem';
-// import { use } from 'react';
 
 const Collections = () => {
 
@@ -14,7 +13,6 @@ const Collections = () => {
   const [subCategory,setSubCategory] = useState([]);
 
   const toggleCategory = (e) => {
-    console.log('Category toggled:', e.target.value); // Debugging
     if(category.includes(e.target.value)){
       setCategory(prev => prev.filter(item => item !== e.target.value))
     }
@@ -35,7 +33,6 @@ const Collections = () => {
   const applyFilter = () => {
     let productsCopy = products.slice();
     if(category.length > 0){
-      console.log('Applying category filter:', category); // Debugging
       productsCopy = productsCopy.filter(item => category.includes(item.category));
     }
     if (subCategory.length > 0) {
@@ -73,13 +70,13 @@ const Collections = () => {
           <p className='mb-3 text-sm font-medium'>CATEGORIES</p>
           <div className='flex flex-col gap-2 text-sm font-light text-gray-700'>
             <p className='flex gap-2'>
-              <input className='w-3' type='checkbox' value={"MEN"} onChange = {toggleCategory} />Men
+              <input className='w-3' type='checkbox' value={"Men"} onChange = {toggleCategory} />Men
             </p>
             <p className='flex gap-2'>
-              <input className='w-3' type='checkbox' value={"WOMEN"} onChange = {toggleCategory} />Women
+              <input className='w-3' type='checkbox' value={"Women"} onChange = {toggleCategory} />Women
             </p>
             <p className='flex gap-2'>
-              <input className='w-3' type='checkbox' value={"KIDS"} onChange = {toggleCategory} />Kids
+              <input className='w-3' type='checkbox' value={"Kids"} onChange = {toggleCategory} />Kids
             </p>
           </div>
         </div>
