@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Title from '../components/Title'
 import CartTotal from '../components/CartTotal'
 import { assets } from '../assets/assets'
+import { ShopContext } from '../context/ShopContext'
 
 const PlaceOrder = () => {
 
   const [method, setMethod] = useState('cod');
+
+  const {navigate} = useContext(ShopContext)
 
   // useEffect(() => {
   //   console.log(method);
@@ -60,6 +63,9 @@ const PlaceOrder = () => {
               <p className='text-gray-500 text-sm font-medium mx-4'>Cash On delivery</p>
             </div>
           </div>
+        <div className='w-full text-end mt-8'>
+        <button onClick={() => navigate("/Orders")} className='bg-black text-white px-16 py-3 text-sm cursor-pointer'>Place Order</button>
+        </div>
         </div>
       </div>
     </div>
