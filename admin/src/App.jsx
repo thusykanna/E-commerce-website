@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Navbar from './components/Navbar.jsx'
 import './index.css'
 import Sidebar from './components/Sidebar.jsx'
@@ -6,10 +6,15 @@ import {Routes, Route} from 'react-router-dom'
 import Add from './pages/Add.jsx'
 import List from './pages/List.jsx'
 import Orders from './pages/Orders.jsx'
+import Login from './components/Login.jsx'
 
 const App = () => {
+
+  const [token, setToken] = useState('')
+
   return (
     <div className='bg-gray-50 min-h-screen'>
+      {token === "" ? <Login /> :
     <>
 
       <Navbar/>
@@ -26,6 +31,7 @@ const App = () => {
       </div>
     
     </>
+  }
     </div>
   )
 }
