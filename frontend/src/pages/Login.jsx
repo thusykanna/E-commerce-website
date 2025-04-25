@@ -1,11 +1,12 @@
 import React, { useContext, useState } from 'react'
 import { ShopContext } from '../context/ShopContext';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const Login = () => {
 
   const [currentState, setCurrentState] = useState('Login');
-  const {token, setToekn, navigate, backendUrl} = useContext(ShopContext);
+  const {token, setToken, navigate, backendUrl} = useContext(ShopContext);
 
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -18,18 +19,35 @@ const Login = () => {
       if (currentState === 'Sign Up') {
 
         const response = await axios.post(backendUrl + '/api/user/register', {name, email, password});
-        console.log(response.data);
-        setCurrentState('Login'); // Switch to Login mode after successful sign-up
-        setName('');
-        setEmail('');
-        setPassword('');
+        if (response.data.success) {
+          setToekn(response.data.token);
+          localStorage.setItem('token', response.data.token);
+
+        } else {
+          toast.error(response.data.message);
+        }
+
+        // setCurrentState('Login'); // Switch to Login mode after successful sign-up
+        // setName('');
+        // setEmail('');
+        // setPassword('');
 
       } else {
 
+        const response = await axios.post(backendUrl + '/api/user/login', {email, password});
+        if(response.data.success){
+          setToken(response.data.token);
+          localStorage.setItem('token', response.data.token);
+          // navigate('/');
+
+        } else {
+          toast.error(response.data.message);
+        }
       }
     
     }catch (error) {
       console.log(error);
+      toast.error(error.message);
     }
   }
 
