@@ -16,6 +16,7 @@ const ShopContextProvider = (props) => {
     const [cartItems, setCartItems] = useState({});
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
+    const [token, setToken] = useState('');
 
     const addToCart = async(itemId, size) => {
 
@@ -90,11 +91,15 @@ const ShopContextProvider = (props) => {
     const getProductsData = async () =>{
         try {
             const response = await axios.get(backendUrl + '/api/product/list');
-            console.log('Backend URL:', backendUrl);
-            console.log(response.data);
+            if(response.data.success){
+                setProducts(response.data.products);
+            } else {
+                toast.error(response.data.message);
+            }
+
         } catch (error) {
-            console.error(error);
-            toast.error("Something went wrong");
+            console.log(error);
+            toast.error(error.message);
         }
     }
 
@@ -117,6 +122,8 @@ const ShopContextProvider = (props) => {
         getCartAmount,
         navigate,
         backendUrl,
+        setToken,
+        token,
     }
 
     return (

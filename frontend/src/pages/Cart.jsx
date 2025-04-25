@@ -6,7 +6,7 @@ import CartTotal from '../components/CartTotal';
 
 const Cart = () => {
 
-  const {productsData, currency, cartItems, updateQuantity, navigate} = useContext(ShopContext);
+  const {products, currency, cartItems, updateQuantity, navigate} = useContext(ShopContext);
   
   const [cartdata, setCardData] = useState([]);
 
@@ -40,6 +40,11 @@ const Cart = () => {
 
             const productData = products.find((product) => product._id === item._id);
 
+            if (!productData) {
+              console.warn(`Product with ID ${item._id} not found in products array.`);
+              return null; // Skip rendering this item if productData is undefined
+            }
+          
             return (
               <div key = {index} className='py-4 border-t border-b text-gray-700 grid grid-cols-[4fr_0.5fr_0.5fr] sm:grid-cols-[4fr_2fr_0.5fr] items-center gap-4'>
                 <div className='flex items-start gap-6'>
