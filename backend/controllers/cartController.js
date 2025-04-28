@@ -7,7 +7,12 @@ const addToCart = async (req, res) => {
         const {userId, itemId, size} = req.body;
 
         const userData = await userModel.findById(userId);
-        let cartData = await userData.cartData;
+
+        if (!userData) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+
+        let cartData = await userData.cartData || {};
 
         if (cartData[itemId]) {
             if (cartData[itemId][size]) {
@@ -23,6 +28,10 @@ const addToCart = async (req, res) => {
         }
 
         await userModel.findByIdAndUpdate(userId, { cartData });
+
+        // Update the user's cart data
+        // userData.cartData = cartData;
+        // await userData.save();
 
         res.json({success: true, message: "Added to cart" });
 
@@ -41,17 +50,19 @@ const updateCart = async (req, res) => {
         const userData = await userModel.findById(userId);
         let cartData = await userData.cartData;
 
-        if (cartData[itemId]) {
-            if (cartData[itemId][size]) {
-                cartData[itemId][size] = quantity;
-            }
-            else{
-                return res.json({success: false, message: "Item not found in cart" });
-            }
-        }
-        else {     
-            return res.json({success: false, message: "Item not found in cart" });
-        }
+        cartData[itemId][size] = quantity;
+
+        // if (cartData[itemId]) {
+        //     if (cartData[itemId][size]) {
+        //         cartData[itemId][size] = quantity;
+        //     }
+        //     else{
+        //         return res.json({success: false, message: "Item not found in cart" });
+        //     }
+        // }
+        // else {     
+        //     return res.json({success: false, message: "Item not found in cart" });
+        // }
 
         await userModel.findByIdAndUpdate(userId, { cartData });
 

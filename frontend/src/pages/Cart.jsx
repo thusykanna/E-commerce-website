@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { ShopContext } from '../context/ShopContext'
 import Title from '../components/Title';
-import { assets, products } from '../assets/assets';
+import { assets } from '../assets/assets';
 import CartTotal from '../components/CartTotal';
 
 const Cart = () => {
@@ -11,21 +11,24 @@ const Cart = () => {
   const [cartdata, setCardData] = useState([]);
 
   useEffect(() => {
-    const tempData = [];
-    for (const items in cartItems) {
-      for (const item in cartItems[items]){
-        if (cartItems[items][item] > 0){
-          tempData.push({
-            _id : items ,
-            size : item,
-            quantity : cartItems[items][item],
-          });
+    if (products.length > 0){
+
+      const tempData = [];
+      for (const items in cartItems) {
+        for (const item in cartItems[items]){
+          if (cartItems[items][item] > 0){
+            tempData.push({
+              _id : items ,
+              size : item,
+              quantity : cartItems[items][item],
+            });
+          }
         }
       }
-    }
     // console.log(tempData);
     setCardData(tempData);
-  }, [cartItems])
+    }
+  }, [cartItems, products])
 
   return (
     <div className='border-t pt-14'>
