@@ -53,7 +53,7 @@ const PlaceOrder = () => {
       // console.log(orderItems);
 
       let orderData = {
-        address: JSON.stringify(formData),
+        address: formData,
         items: orderItems,
         amount: getCartAmount() + delivery_fee
       }
