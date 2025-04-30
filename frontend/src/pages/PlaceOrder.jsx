@@ -62,9 +62,9 @@ const PlaceOrder = () => {
         // api calls for COD delivery
         case 'cod' :
           const response = await axios.post(`${backendUrl}/api/order/place`, orderData, {headers: {token}});
-          if (response.success) {
-            setCartItems({});
-            navigate('/orders');
+          if (response.data.success) {
+            setCartItems({})
+            navigate('/Orders')
             
           } else {
             toast.error(response.data.message);
@@ -77,7 +77,8 @@ const PlaceOrder = () => {
       }
 
     } catch (error) {
-      // console.log(error);
+      console.log(error);
+      toast.error(error.message);
       // resizeBy.json(error.message);
     }
 

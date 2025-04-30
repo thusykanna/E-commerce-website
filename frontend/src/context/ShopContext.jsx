@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-// import { products } from "../assets/assets";
+import { products } from "../assets/assets";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -45,7 +45,7 @@ const ShopContextProvider = (props) => {
 
         if (token) {
             try {
-                await axios.post('http://localhost:4000/api/cart/add', {itemId, size}, {headers: {token}})
+                await axios.post(`${backendUrl}/api/cart/add`, {itemId, size}, {headers: {token}})
             } catch (error) {
                 console.log(error);
                 toast.error(error.message);
