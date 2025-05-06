@@ -9,7 +9,7 @@ import { toast } from 'react-toastify'
 
 const PlaceOrder = () => {
 
-  const {navigate, backendUrl, token, cartItems, setCartItems, getCartAmount, delivery_fee, products} = useContext(ShopContext);
+  const { navigate, backendUrl, token, cartItems, setCartItems, getCartAmount, delivery_fee, products } = useContext(ShopContext);
   const [method, setMethod] = useState('cod');
   const [formData, setFormData] = useState({
     firstName: '',
@@ -33,13 +33,41 @@ const PlaceOrder = () => {
     }));
   }
 
+  const initPay = (order) => {
+    const options = {
+      key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+      amount: order.amount,
+      currency: order.currency,
+      name: 'Order Payment',
+      description: 'Order Payment',
+      order_id: order.id,
+      receipt: order.receipt,
+      handler: async (response) => {
+        console.log(response);
+        try {
+          const {data} = await axios.post(`${backendUrl}/api/order/verifyRazorpay`, response, { headers: { token } });
+          if (data.success) {
+            navigate('/Orders');
+            setCartItems({});
+
+          }
+        } catch (error) {
+          console.log(error);
+          toast.error(error.message);
+        }
+      }
+    }
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+  }
+
   const onSubmitHandler = async (event) => {
     event.preventDefault();
     try {
-      
+
       let orderItems = [];
-      for (const items in cartItems ){
-        for(const item in cartItems[items]){
+      for (const items in cartItems) {
+        for (const item in cartItems[items]) {
           if (cartItems[items][item] > 0) {
             const itemInfo = structuredClone(products.find(product => product._id === items));
             if (itemInfo) {
@@ -58,21 +86,41 @@ const PlaceOrder = () => {
         amount: getCartAmount() + delivery_fee
       }
 
-      switch(method){
+      switch (method) {
         // api calls for COD delivery
-        case 'cod' :
-          const response = await axios.post(`${backendUrl}/api/order/place`, orderData, {headers: {token}});
+        case 'cod':
+          const response = await axios.post(`${backendUrl}/api/order/place`, orderData, { headers: { token } });
           if (response.data.success) {
             setCartItems({})
             navigate('/Orders')
-            
+
           } else {
             toast.error(response.data.message);
           }
+          break;
+
+        case 'stripe':
+          const responseStripe = await axios.post(`${backendUrl}/api/order/stripe`, orderData, { headers: { token } });
+          if (responseStripe.data.success) {
+            const {session_url} = responseStripe.data;
+            window.location.replace(session_url);
+          } else {
+            toast.error(responseStripe.data.message);
+          }
+
+        break;
+        
+        case 'razorpay':
+
+          const responseRazorpay = await axios.post(`${backendUrl}/api/order/razorpay`, orderData, { headers: { token } });
+          if (responseRazorpay.data.success) {
+            initPay(responseRazorpay.data.order);
+          }
+
         break;
 
-        default: 
-        break;
+        default:
+          break;
 
       }
 
@@ -95,7 +143,7 @@ const PlaceOrder = () => {
       <div className='flex flex-col gap-4 w-full sm:max-w-[480px]'>
 
         <div className='text-xl sm:text-2xl my-3'>
-          <Title text1={'DELIVERY'} text2={'INFORMATION'}/>
+          <Title text1={'DELIVERY'} text2={'INFORMATION'} />
         </div>
         <div className='flex gap-3'>
           <input onChange={onchangeHandler} name='firstName' value={formData.firstName} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="text" placeholder='First name' required />
@@ -120,7 +168,7 @@ const PlaceOrder = () => {
           <CartTotal />
         </div>
         <div className='mt-12'>
-          <Title text1={'PAYMENT'} text2={'METHOD'}/>
+          <Title text1={'PAYMENT'} text2={'METHOD'} />
 
           {/* payment method selection */}
           <div className='flex gap-3 flex-col lg:flex-row'>
@@ -137,9 +185,9 @@ const PlaceOrder = () => {
               <p className='text-gray-500 text-sm font-medium mx-4'>Cash On delivery</p>
             </div>
           </div>
-        <div className='w-full text-end mt-8'>
-        <button type='submit' className='bg-black text-white px-16 py-3 text-sm cursor-pointer'>Place Order</button>
-        </div>
+          <div className='w-full text-end mt-8'>
+            <button type='submit' className='bg-black text-white px-16 py-3 text-sm cursor-pointer'>Place Order</button>
+          </div>
         </div>
       </div>
     </form>
