@@ -1,5 +1,10 @@
 import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
+import Stripe from "stripe";
+
+
+//getway initialzation
+
 
 // placing orders using COD
 const placeOrder = async (req, res) => {
@@ -98,7 +103,16 @@ const userOrders = async (req, res) => {
 
 // update order status from admin panel
 const updateStatus = async (req, res) => {
+    try {
+        
+        const {orderId, status} = req.body;
+        await orderModel.findByIdAndUpdate(orderId, {status});
+        res.json({success: true, message: "Order status updated successfully"});
 
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
 }
 
 export { placeOrder, placeOrderStripe, placeOrderRazorpay, allOrders, userOrders, updateStatus };
