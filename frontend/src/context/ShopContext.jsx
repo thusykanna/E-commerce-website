@@ -101,7 +101,8 @@ const ShopContextProvider = (props) => {
                         totalAmount += itemInfo.price * cartItems[items][item];
                     }
                 } catch (error) {
-                    
+                    console.log(error);
+                    toast.error(error.message);
                 }
             }
         }
