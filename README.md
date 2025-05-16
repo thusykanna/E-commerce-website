@@ -2,10 +2,6 @@
 
 *Empowering Your Shopping Experience, Effortlessly Simplified*
 
-![last commit](https://img.shields.io/github/last-commit/thusykanna/E-commerce-website)
-![language](https://img.shields.io/github/languages/top/thusykanna/E-commerce-website)
-![languages count](https://img.shields.io/github/languages/count/thusykanna/E-commerce-website)
-
 ## 🛠️ Built with the tools and technologies:
 
 **Backend & Dev Tools:**  
