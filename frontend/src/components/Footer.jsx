@@ -9,10 +9,7 @@ const Footer = () => {
         <div>
             <img src={assets.logo} className='mb-5 w-32' alt="" />
             <p className='w-full md:w-2/3 text-gray-600'>
-                Lorem ipsum dolor sit amet, consectetur
-                adipiscing elit. Nulla quam velit,
-                vulputate eu pharetra nec,
-                mattis ac neque.
+                Best Choice is your one-stop shop for quality products, great deals, and exceptional customer service. Discover a wide range of items tailored to meet your needs, all in one convenient place.
             </p>
         </div>
 
